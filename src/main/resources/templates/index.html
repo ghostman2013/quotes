@@ -1,11 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quotes</title>
+    <link rel="stylesheet" th:href="@{css/style.css}">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.9/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
 </head>
 <body>
+<div id="root">
+    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+               data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
 
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" v-for="item in navigation">
+                    {{ item.title }}
+                </a>
+            </div>
+        </div>
+    </nav>
+    <section class="section">
+        <div class="container">
+            <div class="columns reversed-columns">
+                <div id="content" class="column">
+                </div>
+                <div class="column is-3 is-narrow">
+                    <div id="sidebar" class="box">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script th:src="@{/js/app.js}"></script>
 </body>
 </html>
