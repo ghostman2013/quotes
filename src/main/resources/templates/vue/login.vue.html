@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<div xmlns:th="http://www.thymeleaf.org">
+<template>
+    <p th:if="${loginError}" class="has-text-danger">Invalid email or password</p>
+
+    <form ref="login-form" v-on:submit.prevent="submitLoginForm" th:action="@{/vue/login.vue}" method="post">
+        <div class="field">
+            <p class="control has-icons-left">
+                <input id="email" name="email" class="input" type="email" placeholder="Email" autofocus required>
+                <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+            </p>
+        </div>
+
+        <div class="field">
+            <p class="control has-icons-left">
+                <input id="password" name="password" class="input" type="password" placeholder="Password" required>
+                <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
+            </p>
+        </div>
+
+        <div class="field">
+            <p class="control">
+                <button type="submit" class="button is-success">Sign in</button>
+            </p>
+        </div>
+    </form>
+
+    <div class="has-text-centered is-fullwidth" style="margin-top: 32px">
+        <a href="#register">I haven't account</a>
+    </div>
+</template>
+</div>

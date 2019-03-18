@@ -1,6 +1,7 @@
 package com.contedevel.quotes.config;
 
 import com.contedevel.quotes.services.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,9 +30,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/index").permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/vue/login.vue.html")
                 .usernameParameter("email")
-                .failureUrl("/login-error");
+                .failureUrl("/vue/login-error.vue")
+                .and()
+                .logout()
+                .logoutSuccessUrl("/");
     }
 
     @Bean
@@ -48,5 +52,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .inMemoryAuthentication()
+                .withUser("admin").password("admin");
     }
 }
