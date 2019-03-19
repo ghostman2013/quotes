@@ -1,6 +1,6 @@
-package com.contedevel.quotes.validators;
+package com.contedevel.quotes.components.validators;
 
-import com.contedevel.quotes.models.User;
+import com.contedevel.quotes.models.database.entities.User;
 import com.contedevel.quotes.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

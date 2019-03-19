@@ -1,9 +1,9 @@
 package com.contedevel.quotes.controllers;
 
-import com.contedevel.quotes.models.User;
+import com.contedevel.quotes.models.database.entities.User;
 import com.contedevel.quotes.services.SecurityService;
 import com.contedevel.quotes.services.UserService;
-import com.contedevel.quotes.validators.UserValidator;
+import com.contedevel.quotes.components.validators.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

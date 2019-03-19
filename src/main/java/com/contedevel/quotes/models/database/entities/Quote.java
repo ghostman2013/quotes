@@ -1,5 +1,7 @@
-package com.contedevel.quotes.models;
+package com.contedevel.quotes.models.database.entities;
 
+import com.contedevel.quotes.models.IType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
@@ -7,8 +9,9 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "quotes")
-public class Quote extends AuditModel {
+public class Quote extends AuditModel implements IType {
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -21,14 +24,17 @@ public class Quote extends AuditModel {
     @Column(nullable = false)
     private String author;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
     private User user;
 
-    @Formula("(SELECT COUNT(v) FROM votes v WHERE v.quote_id = id AND v.like = true)")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Formula("(SELECT COUNT(v.id) FROM votes v WHERE v.quote_id = id AND v.liked = true)")
     private long likes;
 
-    @Formula("(SELECT COUNT(v) FROM votes v WHERE v.quote_id = id AND v.like = false)")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Formula("(SELECT COUNT(v.id) FROM votes v WHERE v.quote_id = id AND v.liked = false)")
     private long dislikes;
 
     public long getId() {
@@ -73,5 +79,10 @@ public class Quote extends AuditModel {
 
     public long getDislikes() {
         return dislikes;
+    }
+
+    @Override
+    public String getType() {
+        return "quote";
     }
 }

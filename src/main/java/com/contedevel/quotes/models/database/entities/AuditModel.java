@@ -1,4 +1,4 @@
-package com.contedevel.quotes.models;
+package com.contedevel.quotes.models.database.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,6 +15,7 @@ import java.util.Date;
         allowGetters = true
 )
 public class AuditModel {
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
@@ -24,4 +25,12 @@ public class AuditModel {
     @Column(name = "updated_at", nullable = false)
     @LastModifiedDate
     private Date updatedAt;
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
 }

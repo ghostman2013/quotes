@@ -1,7 +1,7 @@
 package com.contedevel.quotes.services;
 
-import com.contedevel.quotes.models.User;
-import com.contedevel.quotes.models.UserRepository;
+import com.contedevel.quotes.models.database.entities.User;
+import com.contedevel.quotes.models.database.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -4,6 +4,7 @@ import com.contedevel.quotes.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,19 +24,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
         http
                 .cors()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/index").permitAll()
+                    .antMatchers("/index", "/api**").permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/vue/login.vue.html")
-                .usernameParameter("email")
-                .failureUrl("/vue/login-error.vue")
+                    .loginPage("/vue/login.vue.html")
+                    .usernameParameter("email")
+                    .failureUrl("/vue/login-error.vue")
                 .and()
                 .logout()
-                .logoutSuccessUrl("/");
+                    .logoutSuccessUrl("/");
     }
 
     @Bean
