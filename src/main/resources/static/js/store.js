@@ -2,13 +2,32 @@ Vue.use(Vuex);
 
 const STORE = new Vuex.Store({
     state: {
-        sidebar: 'loading'
+        token: null
     },
     getters: {
-        SIDEBAR: state => { return state.sidebar; }
+        TOKEN: state => {
+            return state.token;
+        }
     },
     mutations: {
-        SET_SIDEBAR: (state, payload) => { state.sidebar = payload; }
+        INIT_TOKEN: (state) => {
+            const data = window.localStorage.getItem('JwtToken');
+
+            if (data) {
+                const token = JSON.parse(data);
+                state.token = token;
+            }
+        },
+        SET_TOKEN: (state, payload) => {
+            window.localStorage.setItem('JwtToken', JSON.stringify(payload));
+            state.token = payload;
+        },
+        DELETE_TOKEN: (state) => {
+            window.localStorage.removeItem("JwtToken");
+            state.token = null;
+        }
     },
     actions: {}
 });
+
+STORE.commit('INIT_TOKEN');

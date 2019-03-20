@@ -1,25 +1,25 @@
-<template xmlns:th="http://www.thymeleaf.org">
+<template>
     <div class="box">
-        <!--<p class="has-text-danger">Invalid email or password</p>-->
-
-        <form ref="login-form" v-on:submit.prevent="submitLoginForm" th:action="@{/vue/login.vue}" method="post">
+        <p class="has-text-danger" v-if="error">{{ error }}</p>
+        <br/>
+        <form v-on:submit.prevent="submit" method="post">
             <div class="field">
                 <p class="control has-icons-left">
-                    <input id="email" name="email" class="input" type="email" placeholder="Email" autofocus required>
+                    <input class="input" type="email" v-model="email" placeholder="Email" autofocus required>
                     <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
                 </p>
             </div>
 
             <div class="field">
                 <p class="control has-icons-left">
-                    <input id="password" name="password" class="input" type="password" placeholder="Password" required>
+                    <input class="input" type="password" v-model="password" minlength="8" maxlength="32" placeholder="Password" required>
                     <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
                 </p>
             </div>
 
             <div class="field">
                 <p class="control">
-                    <button type="submit" class="button is-success">Sign in</button>
+                    <button type="submit" class="button is-success" :disabled="!ready">Sign in</button>
                 </p>
             </div>
         </form>
@@ -29,3 +29,43 @@
         </div>
     </div>
 </template>
+
+<script>
+    module.exports = {
+        data: function() {
+            return {
+                'error': null,
+                'email': '',
+                'password': '',
+                'ready': true
+            };
+        },
+        methods: {
+            'submit': function () {
+                const self = this;
+
+                self.ready = false;
+                axios.get("auth/token", {
+                    auth: {
+                        username: self.email,
+                        password: self.password
+                    }
+                }).then(
+                    (response) => {
+                        STORE.commit("SET_TOKEN", response.data);
+                    },
+                    (error) => {
+                        if (error.response) {
+                            const response = error.response;
+                            console.log(response);
+                            self.error = response.data.message;
+                        } else {
+                            self.error = 'Internal server error.';
+                        }
+                        self.ready = true;
+                    }
+                )
+            }
+        }
+    };
+</script>

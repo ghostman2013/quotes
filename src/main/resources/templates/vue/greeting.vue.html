@@ -1,5 +1,29 @@
-<template xmlns:th="http://www.thymeleaf.org">
+<template>
     <div class="box">
-        <span>Hello</span>
+        <div>Hello, {{ token.name }}!</div><br/><br/>
+        <button type="button" class="button is-primary" v-on:click="logout">Exit</button>
     </div>
 </template>
+
+<script>
+    module.exports = {
+        data: function() {
+            return {
+                'error': null,
+                'email': '',
+                'password': '',
+                'ready': true
+            };
+        },
+        computed: {
+            token() {
+                return STORE.getters.TOKEN;
+            }
+        },
+        methods: {
+            'logout': function () {
+                STORE.commit("DELETE_TOKEN");
+            }
+        }
+    };
+</script>

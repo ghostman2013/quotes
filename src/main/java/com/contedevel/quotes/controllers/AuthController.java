@@ -1,6 +1,7 @@
 package com.contedevel.quotes.controllers;
 
 import com.contedevel.quotes.exceptions.AuthenticationException;
+import com.contedevel.quotes.models.JwtToken;
 import com.contedevel.quotes.models.database.entities.User;
 import com.contedevel.quotes.security.HeaderUtils;
 import com.contedevel.quotes.security.UserCredentials;
@@ -23,7 +24,7 @@ public class AuthController {
     private JwtService jwtService;
 
     @GetMapping("token")
-    public String token(@RequestHeader("Authorization") String header) {
+    public JwtToken token(@RequestHeader("Authorization") String header) {
         UserCredentials creds = HeaderUtils.parseAuthorizationHeader(header);
         User user = userService.findByEmail(creds.getEmail())
                 .orElseThrow(AuthenticationException::new);
@@ -32,6 +33,7 @@ public class AuthController {
             throw new AuthenticationException();
         }
 
-        return jwtService.generateToken(user);
+        return new JwtToken(user.getId(), user.getEmail(), user.getName(),
+                jwtService.generateToken(user));
     }
 }
