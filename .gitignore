@@ -87,6 +87,3 @@ local.properties
 target/
 
 /bin
-
-### Local configuration ###
-application.properties
