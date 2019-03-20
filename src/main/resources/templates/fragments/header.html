@@ -1,14 +1,17 @@
-<nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+<nav aria-label="main navigation" class="navbar is-primary" role="navigation">
     <div class="navbar-brand">
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
-           data-target="navbarBasicExample">
+        <a aria-expanded="false" aria-label="menu"
+           class="navbar-burger burger"
+           data-target="navbarBasicExample"
+           role="button"
+           v-on:click="isNavVis = !isNavVis" v-bind:class="{ 'is-active' : isNavVis }">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
         </a>
     </div>
 
-    <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-menu" id="navbarBasicExample" v-bind:class="{ 'is-active' : isNavVis }">
         <div class="navbar-start">
             <a class="navbar-item" v-for="item in navigation">
                 {{ item.title }}

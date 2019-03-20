@@ -1,7 +1,7 @@
 package com.contedevel.quotes.components.validators;
 
+import com.contedevel.quotes.models.database.UserRepository;
 import com.contedevel.quotes.models.database.entities.User;
-import com.contedevel.quotes.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -11,7 +11,7 @@ import org.springframework.validation.Validator;
 public class UserValidator implements Validator {
 
     @Autowired
-    private UserService userService;
+    private UserRepository repository;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -22,7 +22,7 @@ public class UserValidator implements Validator {
     public void validate(Object target, Errors errors) {
         User user = (User) target;
 
-        if (userService.findByEmail(user.getEmail()) != null) {
+        if (repository.findByEmail(user.getEmail()).isPresent()) {
             errors.rejectValue("email", "user-form.email.exists");
         }
 

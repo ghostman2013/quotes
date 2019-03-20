@@ -18,7 +18,7 @@ public class Vote extends AuditModel implements IType {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="user_id", nullable = false)
     private User user;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

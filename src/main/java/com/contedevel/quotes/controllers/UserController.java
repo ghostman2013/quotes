@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     @Autowired
@@ -17,6 +17,11 @@ public class UserController {
     public User get(@PathVariable long id) throws UserNotFoundException {
         return repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
+    }
+
+    @PostMapping
+    public User create(@RequestBody User user) {
+        return repository.save(user);
     }
 
     @PutMapping("/{id}")

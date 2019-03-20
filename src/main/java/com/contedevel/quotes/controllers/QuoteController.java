@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Random;
 
 @RestController
-@RequestMapping("/api/quotes")
+@RequestMapping("/api/v1/quotes")
 public class QuoteController {
 
     private static final int PAGE_SIZE = 10;

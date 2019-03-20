@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/quotes")
+@RequestMapping("/api/v1/quotes")
 public class VoteController {
 
     @Autowired
