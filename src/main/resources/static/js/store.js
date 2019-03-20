@@ -2,16 +2,13 @@ Vue.use(Vuex);
 
 const STORE = new Vuex.Store({
     state: {
-        sidebar: 'loading',
-        content: 'loading'
+        sidebar: 'loading'
     },
     getters: {
-        SIDEBAR: state => { return state.sidebar; },
-        CONTENT: state => { return state.content; }
+        SIDEBAR: state => { return state.sidebar; }
     },
     mutations: {
-        SET_SIDEBAR: (state, payload) => { state.sidebar = payload; },
-        SET_CONTENT: (state, payload) => { state.content = payload; }
+        SET_SIDEBAR: (state, payload) => { state.sidebar = payload; }
     },
     actions: {}
 });

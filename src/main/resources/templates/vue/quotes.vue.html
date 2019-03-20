@@ -1,0 +1,19 @@
+<template xmlns:th="http://www.thymeleaf.org">
+    <div class="box">
+        <span>{{ mode }}</span>
+    </div>
+</template>
+
+<script th:inline="javascript" xmlns:th="http://www.thymeleaf.org">
+    /*<![CDATA[*/
+
+    module.exports = {
+        data: function() {
+            return {
+                mode: /*[[${mode}]]*/ 'top10'
+            }
+        }
+    };
+
+    /*]]>*/
+</script>
