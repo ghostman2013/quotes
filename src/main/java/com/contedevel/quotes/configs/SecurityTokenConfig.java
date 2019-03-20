@@ -42,12 +42,7 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    protected BCryptPasswordEncoder getPasswordEncoderBean() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    protected JwtConfig getJwtConfigBean() {
+    protected JwtConfig jwtConfigBean() {
         return new JwtConfig();
     }
 }
