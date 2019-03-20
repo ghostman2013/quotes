@@ -17,8 +17,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.util.WebUtils;
 
-import java.util.List;
-
 @RestControllerAdvice
 public class RestErrorHandler extends ResponseEntityExceptionHandler {
 
@@ -35,6 +33,15 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
         ErrorDetails errorDetails = new ErrorDetails(HttpStatus.NOT_FOUND, ex.getMessage(),
                 request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserExistsException.class)
+    public ResponseEntity<ErrorDetails> handleUserExistsException(
+            UserExistsException ex, WebRequest request) {
+        LOGGER.error(String.format("User exists already: %s", ex.getMessage()), ex);
+        ErrorDetails errorDetails = new ErrorDetails(HttpStatus.BAD_REQUEST, ex.getMessage(),
+                request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {

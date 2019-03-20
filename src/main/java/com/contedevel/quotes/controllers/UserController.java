@@ -1,5 +1,6 @@
 package com.contedevel.quotes.controllers;
 
+import com.contedevel.quotes.exceptions.UserExistsException;
 import com.contedevel.quotes.exceptions.UserNotFoundException;
 import com.contedevel.quotes.models.database.entities.User;
 import com.contedevel.quotes.models.database.UserRepository;
@@ -25,6 +26,11 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public User create(@Valid @RequestBody User user) {
+
+        if (repository.existsByEmail(user.getEmail())) {
+            throw new UserExistsException();
+        }
+
         return repository.save(user);
     }
 

@@ -41,7 +41,7 @@
                     <br/>
                     <div class="field">
                         <p class="control">
-                            <button type="submit" class="button is-success">Sign up</button>
+                            <button type="submit" class="button is-success" :disabled="!ready">Sign up</button>
                         </p>
                     </div>
                 </form>
@@ -59,7 +59,8 @@
                 'password': '',
                 'passwordConfirm': '',
                 'name': '',
-                'success': false
+                'success': false,
+                'ready': true
             };
         },
         methods: {
@@ -71,17 +72,27 @@
                     return;
                 }
 
+                self.ready = false;
                 axios.post("api/v1/users", {
                     "email": self.email,
                     "password": self.password,
                     "password_confirm": self.passwordConfirm,
                     "name": self.name
                 }).then(
-                    (response) => { self.success = true; },
+                    (response) => {
+                            self.success = true;
+                        },
                     (error) => {
-                        console.log(error.response);
-                        self.error = 'Internal server error.';
-                    }
+                            console.log(error.response);
+
+                            if (error.response.status === 400) {
+                                self.error = error.response.data.message;
+                            } else {
+                                self.error = 'Internal server error.';
+                            }
+
+                            self.ready = true;
+                        }
                 )
             }
         }
