@@ -1,5 +1,6 @@
 package com.contedevel.quotes;
 
+import com.contedevel.quotes.configs.JwtConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -17,5 +18,10 @@ public class App {
     @Bean
     protected BCryptPasswordEncoder passwordEncoderBean() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    protected JwtConfig jwtConfigBean() {
+        return new JwtConfig();
     }
 }
