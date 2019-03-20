@@ -4,7 +4,10 @@ import com.contedevel.quotes.exceptions.UserNotFoundException;
 import com.contedevel.quotes.models.database.entities.User;
 import com.contedevel.quotes.models.database.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -20,12 +23,14 @@ public class UserController {
     }
 
     @PostMapping
-    public User create(@RequestBody User user) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public User create(@Valid @RequestBody User user) {
         return repository.save(user);
     }
 
     @PutMapping("/{id}")
-    public User update(@PathVariable long id, @RequestBody User user) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public User update(@PathVariable long id, @Valid @RequestBody User user) {
         user.setId(id);
 
         return repository.save(user);

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.util.WebUtils;
+
+import java.util.List;
 
 @RestControllerAdvice
 public class RestErrorHandler extends ResponseEntityExceptionHandler {
@@ -54,15 +57,16 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
         StringBuilder sb = new StringBuilder();
 
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-            sb.append(error.getField()).append(" : ").append(error.getDefaultMessage());
+            sb.append(error.getField()).append(" : ").append(error.getDefaultMessage()).append(".\n");
         }
 
         for (ObjectError error : ex.getBindingResult().getGlobalErrors()) {
-            sb.append(error.getObjectName()).append(" : ").append(error.getDefaultMessage());
+            sb.append(error.getObjectName()).append(" : ").append(error.getDefaultMessage()).append(".\n");
         }
 
         LOGGER.error(String.format("Invalid method argument: %s", ex.getMessage()), ex);
         ErrorDetails errorDetails = new ErrorDetails(status, ex.getMessage(), sb.toString());
+
         return new ResponseEntity<>(errorDetails, status);
     }
 

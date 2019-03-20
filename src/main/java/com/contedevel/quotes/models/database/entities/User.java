@@ -5,8 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "users")
@@ -17,18 +18,25 @@ public class User extends AuditModel implements IType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
+    @Valid
+    @NotEmpty
     @Email
     @Column(nullable = false)
     private String email;
 
+    @Valid
+    @NotEmpty
+    @Column(nullable = false)
+    private String name;
+
+    @Valid
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotNull
+    @NotEmpty
     @Column(nullable = false)
     private String password;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotNull
+    @JsonProperty(value = "password_confirm", access = JsonProperty.Access.WRITE_ONLY)
+    @NotEmpty
     @Transient
     private String passwordConfirm;
 
@@ -74,6 +82,15 @@ public class User extends AuditModel implements IType {
 
     public User setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public User setName(String name) {
+        this.name = name;
         return this;
     }
 
