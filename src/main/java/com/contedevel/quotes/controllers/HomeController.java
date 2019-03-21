@@ -17,9 +17,9 @@ public class HomeController {
         return "vue/login.vue";
     }
 
-    @GetMapping("/vue/profile.vue")
-    public String profile() {
-        return "vue/profile.vue";
+    @GetMapping("/vue/mine.vue")
+    public String mine() {
+        return "vue/mine.vue";
     }
 
     @GetMapping("/vue/greeting.vue")
@@ -46,6 +46,11 @@ public class HomeController {
         model.addAttribute("mode", "last");
 
         return "vue/quotes.vue";
+    }
+
+    @GetMapping("/vue/quote.vue")
+    public String quote(ModelMap model) {
+        return "vue/quote.vue";
     }
 
     @GetMapping("/")

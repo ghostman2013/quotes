@@ -1,0 +1,106 @@
+<template>
+    <div>
+        <div v-if="token">
+            <div class="box">
+                <h1 class="title">New quote</h1>
+                <p class="has-text-danger" v-if="error">{{ error }}</p>
+                <form v-on:submit.prevent="submit" method="post">
+                    <div class="field">
+                        <p class="control">
+                            <textarea class="textarea" v-model="text" placeholder="&#8220;Quote&#8221;" maxlength="1024" required></textarea>
+                        </p>
+                    </div>
+
+                    <div class="field">
+                        <p class="control">
+                            <button type="submit" class="button is-success" :disabled="!ready">Post</button>
+                        </p>
+                    </div>
+                </form>
+            </div>
+            <quote v-for="q in quotes" :quote="q" :key="q.id"></quote>
+            <div class="has-text-centered" v-if="hasNext">
+                <a v-on:click="loadMore">Show more</a>
+            </div>
+        </div>
+        <div v-else>
+            <div class="is-size-5 has-text-danger has-text-centered">
+                You aren't logged. Sign in to see this page.
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    module.exports = {
+        data: function() {
+            return {
+                'error': null,
+                'text': '',
+                'ready': true,
+                'quotes': [],
+                'hasNext': true,
+                'page': 0
+            };
+        },
+        components: {
+            'quote': httpVueLoader('vue/quote.vue')
+        },
+        computed: {
+            token() {
+                return STORE.getters.TOKEN;
+            }
+        },
+        mounted() {
+            this.loadMore();
+        },
+        methods: {
+            'submit': function () {
+                const self = this;
+                self.ready = false;
+                self.error = null;
+                axios.post("api/v1/quotes", {
+                    "text": self.text
+                }).then(
+                    (response) => {
+                        self.text = '';
+                        self.ready = true;
+                        self.quotes.unshift(response.data);
+                    },
+                    (error) => {
+
+                        if (error.response) {
+                            const response = error.response;
+                            console.log(response);
+                            self.error = response.data.message;
+                        } else {
+                            self.error = 'Internal server error.';
+                        }
+                        self.ready = true;
+                    }
+                )
+            },
+            'loadMore': function () {
+                if (STORE.getters.TOKEN) {
+                    this.hasNext = false;
+                    const self = this;
+                    axios.get('api/v1/quotes/mine?page=' + self.page)
+                        .then(
+                            response => {
+                                const page = response.data;
+                                console.log(page);
+                                if (page.content) {
+                                    self.quotes = self.quotes.concat(page.content);
+                                }
+                                self.hasNext = page.next;
+                                self.page = page.number + 1;
+                            },
+                            error => {
+                                self.hasNext = true
+                            }
+                        );
+                }
+            }
+        }
+    };
+</script>

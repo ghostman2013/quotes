@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "quotes")
@@ -16,13 +17,10 @@ public class Quote extends AuditModel implements IType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
-    @Column(nullable = false)
+    @NotEmpty
+    @Size(max = 1024)
+    @Column(nullable = false, length = 1024)
     private String text;
-
-    @NotNull
-    @Column(nullable = false)
-    private String author;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ManyToOne
@@ -55,15 +53,6 @@ public class Quote extends AuditModel implements IType {
         return this;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public Quote setAuthor(String author) {
-        this.author = author;
-        return this;
-    }
-
     public User getUser() {
         return user;
     }
@@ -79,6 +68,11 @@ public class Quote extends AuditModel implements IType {
 
     public long getDislikes() {
         return dislikes;
+    }
+
+    @JsonProperty("score")
+    public long getScore() {
+        return likes + dislikes;
     }
 
     @Override

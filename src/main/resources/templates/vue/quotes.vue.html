@@ -1,6 +1,9 @@
 <template xmlns:th="http://www.thymeleaf.org">
-    <div class="box">
-        <span>{{ mode }}</span>
+    <div>
+        <quote v-for="q in quotes" :quote="q" :key="q.id"></quote>
+        <div class="has-text-centered" v-if="hasNext">
+            <a v-on:click="loadMore">Show more</a>
+        </div>
     </div>
 </template>
 
@@ -10,7 +13,42 @@
     module.exports = {
         data: function() {
             return {
-                mode: /*[[${mode}]]*/ 'top10'
+                'quotes': [],
+                'hasNext': true,
+                'page': 0
+            };
+        },
+        components: {
+            'quote': httpVueLoader('vue/quote.vue')
+        },
+        mounted() {
+            this.loadMore();
+        },
+        methods: {
+            'loadMore': function () {
+                const mode = /*[[${mode}]]*/ 'top10';
+                this.hasNext = false;
+                const self = this;
+                axios.get('api/v1/quotes/' + mode + '?page=' + self.page)
+                    .then(
+                        response => {
+                            const page = response.data;
+                            console.log(page);
+                            if (page.type) {
+                                if (page.content) {
+                                    self.quotes = self.quotes.concat(page.content);
+                                }
+                                self.hasNext = page.next;
+                                self.page = page.number + 1;
+                            } else {
+                                self.quotes = page;
+                                self.hasNext = false;
+                            }
+                        },
+                        error => {
+                            self.hasNext = true
+                        }
+                    );
             }
         }
     };

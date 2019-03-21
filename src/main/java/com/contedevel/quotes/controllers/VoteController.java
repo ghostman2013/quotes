@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/quotes")
-public class VoteController {
+public class VoteController extends BaseController {
 
     @Autowired
     private QuoteRepository quoteRepository;
@@ -26,8 +26,7 @@ public class VoteController {
             throws QuoteNotFoundException {
         Quote quote = quoteRepository.findById(quoteId)
                 .orElseThrow(() -> new QuoteNotFoundException(quoteId));
-        // TODO: Get the current user
-        User user = new User();
+        User user = getCurrentUser();
 
         return voteRepository.save(new Vote()
                 .setQuote(quote)
@@ -38,8 +37,7 @@ public class VoteController {
     @DeleteMapping("{quote_id}/votes/vote")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("quote_id") long quoteId) throws QuoteNotFoundException {
-        // TODO: Get the current user
-        User user = new User();
+        User user = getCurrentUser();
         Quote quote = quoteRepository.findById(quoteId)
                 .orElseThrow(() -> new QuoteNotFoundException(quoteId));
         voteRepository.deleteByUserAndQuote(user, quote);

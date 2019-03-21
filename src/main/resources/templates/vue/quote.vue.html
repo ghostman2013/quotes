@@ -1,5 +1,64 @@
-<template xmlns:th="http://www.thymeleaf.org">
+<template>
     <div class="box">
-        <span>Quote</span>
+        <article class="media">
+            <div class="media-content">
+                <div class="content">
+                    <p>
+                        <span class="is-size-4">&#8220;</span>
+                        <span class="has-text-grey">{{ quote.text }}</span>
+                        <span class="is-size-4">&#8221;</span>
+                    </p>
+                </div>
+                <nav class="level is-mobile">
+                    <div class="level-left">
+                        <span class="is-size-7 has-text-grey-light">
+                            Created by {{ quote.user.name }} at
+                            <time v-bind:datetime="quote.createdAt">{{ quote.createdAt }}</time>
+                        </span>
+                    </div>
+                    <div class="level-right">
+                        <a aria-label="vote up" class="level-item">
+                            <span class="icon is-small has-text-grey">
+                                <i aria-hidden="true" class="fas fa-thumbs-up" data-fa-transform="flip-h"></i>
+                            </span>
+                        </a>
+                        <span aria-label="reply" class="level-item"
+                              v-bind:class="quote.score > 0 ? 'has-text-success' : quote.score < 0 ? 'has-text-danger' : 'has-text-grey-light'">
+                            {{ quote.score }}
+                        </span>
+                        <a aria-label="vote down" class="level-item">
+                            <span class="icon is-small has-text-grey">
+                                <i aria-hidden="true" class="fas fa-thumbs-down"></i>
+                            </span>
+                        </a>
+                        <span area-label="delete" class="level-item" v-if="mine"></span>
+                        <a aria-label="like" class="level-item" v-if="mine">
+                            <span class="icon is-small has-text-grey">
+                                <i aria-hidden="true" class="fas fa-trash"></i>
+                            </span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </article>
     </div>
 </template>
+
+<script>
+    module.exports = {
+        data: function () {
+            return {
+                'mine': false
+            }
+        },
+        mounted() {
+            this.mine = this.token && this.token.id === this.quote.user.id
+        },
+        computed: {
+            token() {
+                return STORE.getters.TOKEN;
+            }
+        },
+        props: ['quote']
+    };
+</script>

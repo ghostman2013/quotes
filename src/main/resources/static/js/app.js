@@ -9,12 +9,6 @@ const app = new Vue({
     router: ROUTER,
     el: '#root',
     data: {
-        navigation: [
-            { title: 'Profile', link: "#/users/me" },
-            { title: 'Top 10', link: "#/" },
-            { title: 'Flop 10', link: "#/quotes/flop10" },
-            { title: 'Last', link: "#/quotes/last" }
-        ],
         isNavVis: false
     },
     computed: {

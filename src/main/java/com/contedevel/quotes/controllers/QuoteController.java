@@ -11,12 +11,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Random;
 
 @RestController
 @RequestMapping("/api/v1/quotes")
-public class QuoteController {
+public class QuoteController extends BaseController {
 
     private static final int PAGE_SIZE = 10;
 
@@ -30,9 +31,8 @@ public class QuoteController {
     }
 
     @GetMapping("/last")
-    public Quote getLast() throws NoAvailableQuotesException {
-        return repository.findFirstByOrderByUpdatedAtDesc()
-                .orElseThrow(NoAvailableQuotesException::new);
+    public Page<Quote> getLast(@RequestParam(value = "page", defaultValue = "0") int page) {
+        return repository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, PAGE_SIZE));
     }
 
     @GetMapping
@@ -42,19 +42,19 @@ public class QuoteController {
 
     @GetMapping("/mine")
     public Page<Quote> getMine(@RequestParam(value = "page", defaultValue = "0") int page) {
-        // TODO: Find by the current user
-        User user = new User();
-        return repository.findAllByUser(user, PageRequest.of(page, PAGE_SIZE));
+        User user = getCurrentUser();
+
+        return repository.findAllByUserOrderByUpdatedAtDesc(user, PageRequest.of(page, PAGE_SIZE));
     }
 
     @GetMapping("/top10")
     public List<Quote> getTop10() {
-        return repository.findTop10ByOrderByLikesDescDislikesAsc();
+        return repository.findTop10ByOrderByLikesDescDislikesAscUpdatedAtDesc();
     }
 
     @GetMapping("/flop10")
     public List<Quote> getFlop10() {
-        return repository.findTop10ByOrderByDislikesDescLikesAsc();
+        return repository.findTop10ByOrderByDislikesDescLikesAscUpdatedAtDesc();
     }
 
     @GetMapping("/random")
@@ -78,16 +78,9 @@ public class QuoteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Quote create(@RequestBody Quote quote) {
-        // TODO: Get current user
-        return repository.save(quote);
-    }
-
-    @PutMapping("{id}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Quote update(@RequestBody Quote quote, @PathVariable Long id) {
-        // TODO: Get current user
-        quote.setId(id);
+    public Quote create(@Valid @RequestBody Quote quote) {
+        User user = getCurrentUser();
+        quote.setUser(user);
 
         return repository.save(quote);
     }

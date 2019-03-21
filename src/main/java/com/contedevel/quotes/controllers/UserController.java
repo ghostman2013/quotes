@@ -3,8 +3,6 @@ package com.contedevel.quotes.controllers;
 import com.contedevel.quotes.exceptions.UserExistsException;
 import com.contedevel.quotes.exceptions.UserNotFoundException;
 import com.contedevel.quotes.models.database.entities.User;
-import com.contedevel.quotes.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,15 +10,11 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserController {
+public class UserController extends BaseController {
 
-    @Autowired
-    private UserService userService;
-
-    @GetMapping("/{id}")
-    public User get(@PathVariable long id) throws UserNotFoundException {
-        return userService.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
+    @GetMapping("/me")
+    public User get() throws UserNotFoundException {
+        return getCurrentUser();
     }
 
     @PostMapping
@@ -34,10 +28,11 @@ public class UserController {
         return userService.save(user);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User update(@PathVariable long id, @Valid @RequestBody User user) {
-        user.setId(id);
+    public User update(@Valid @RequestBody User user) {
+        User currentUser = getCurrentUser();
+        user.setId(currentUser.getId());
 
         return userService.save(user);
     }

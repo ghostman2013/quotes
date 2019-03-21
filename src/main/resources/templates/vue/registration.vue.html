@@ -14,7 +14,7 @@
                 <form v-on:submit.prevent="submit" method="post">
                     <div class="field">
                         <p class="control has-icons-left">
-                            <input class="input" type="email" v-model="email" placeholder="Email" autofocus required>
+                            <input class="input" type="email" v-model="email" maxlength="254" placeholder="Email" autofocus required>
                             <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
                         </p>
                     </div>
@@ -35,7 +35,7 @@
 
                     <div class="field">
                         <p class="control has-icons-left">
-                            <input class="input" type="text" v-model="name" placeholder="Name" required>
+                            <input class="input" type="text" v-model="name" placeholder="Name" maxlength="128" required>
                             <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
                         </p>
                     </div>

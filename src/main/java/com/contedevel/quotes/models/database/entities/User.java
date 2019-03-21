@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -18,18 +18,17 @@ public class User extends AuditModel implements IType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Valid
     @NotEmpty
     @Email
-    @Column(nullable = false)
+    @Size(max = 254)
+    @Column(nullable = false, length = 254)
     private String email;
 
-    @Valid
     @NotEmpty
-    @Column(nullable = false)
+    @Size(max = 128)
+    @Column(nullable = false, length = 128)
     private String name;
 
-    @Valid
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotEmpty
     @Column(nullable = false)

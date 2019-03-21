@@ -19,7 +19,7 @@ public class JwtServiceImpl implements JwtService {
     public String generateToken(User user) {
         long now = System.currentTimeMillis();
         return Jwts.builder()
-                .setSubject(user.getEmail())
+                .setSubject(String.valueOf(user.getId()))
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + jwtConfig.getExpiration() * 1000))  // in milliseconds
                 .signWith(SignatureAlgorithm.HS512, jwtConfig.getSecret().getBytes())
