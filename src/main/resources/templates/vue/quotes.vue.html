@@ -1,6 +1,9 @@
 <template xmlns:th="http://www.thymeleaf.org">
     <div>
         <quote v-for="q in quotes" :quote="q" :key="q.id"></quote>
+        <div v-if="quotes.length == 0" class="has-text-centered has-text-info">
+            No quotes
+        </div>
         <div class="has-text-centered" v-if="hasNext">
             <a v-on:click="loadMore">Show more</a>
         </div>
