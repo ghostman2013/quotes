@@ -2,7 +2,7 @@
     <div>
         <div v-if="token">
             <div class="box">
-                <h1 class="title">New quote</h1>
+                <h2 class="subtitle">New quote</h2>
                 <p class="has-text-danger" v-if="error">{{ error }}</p>
                 <form v-on:submit.prevent="submit" method="post">
                     <div class="field">
@@ -25,7 +25,8 @@
         </div>
         <div v-else>
             <div class="is-size-5 has-text-danger has-text-centered">
-                You aren't logged. Sign in to see this page.
+                You aren't logged. Sign in to see this page.<br/><br/>
+                <router-link class="is-primary" to="/">Home</router-link>
             </div>
         </div>
     </div>
@@ -44,7 +45,7 @@
             };
         },
         components: {
-            'quote': httpVueLoader('vue/quote.vue')
+            'quote': httpVueLoader('/vue/quote.vue')
         },
         computed: {
             token() {
@@ -59,7 +60,7 @@
                 const self = this;
                 self.ready = false;
                 self.error = null;
-                axios.post("api/v1/quotes", {
+                axios.post("/api/v1/quotes", {
                     "text": self.text
                 }).then(
                     (response) => {
@@ -84,7 +85,7 @@
                 if (STORE.getters.TOKEN) {
                     this.hasNext = false;
                     const self = this;
-                    axios.get('api/v1/quotes/mine?page=' + self.page)
+                    axios.get('/api/v1/quotes/mine?page=' + self.page)
                         .then(
                             response => {
                                 const page = response.data;

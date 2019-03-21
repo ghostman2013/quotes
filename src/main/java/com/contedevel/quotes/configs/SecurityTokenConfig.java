@@ -35,7 +35,7 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers(HttpMethod.GET, jwtConfig.getUri()).permitAll()
                     .antMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
-                    .antMatchers(HttpMethod.GET, "/", "/vue/**", "/api/v1/quotes**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/", "/vue/**", "/api/v1/quotes", "/api/v1/quotes/**").permitAll()
                     .anyRequest().authenticated();
     }
 

@@ -3,7 +3,7 @@
         <div v-if="success" class="column is-offset-2 is-8">
             <div class="box has-text-centered has-text-success">
                 Account was created! Use a login form to sign in.<br/><br/>
-                <a href="#/" class="is-primary">Home</a>
+                <router-link class="is-primary" to="/">Home</router-link>
             </div>
         </div>
         <div class="column is-offset-2 is-8" v-else>
@@ -74,7 +74,7 @@
                 }
 
                 self.ready = false;
-                axios.post("api/v1/users", {
+                axios.post("/api/v1/users", {
                     "email": self.email,
                     "password": self.password,
                     "password_confirm": self.passwordConfirm,

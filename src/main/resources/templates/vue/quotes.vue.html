@@ -19,7 +19,7 @@
             };
         },
         components: {
-            'quote': httpVueLoader('vue/quote.vue')
+            'quote': httpVueLoader('/vue/quote.vue')
         },
         mounted() {
             this.loadMore();
@@ -29,7 +29,7 @@
                 const mode = /*[[${mode}]]*/ 'top10';
                 this.hasNext = false;
                 const self = this;
-                axios.get('api/v1/quotes/' + mode + '?page=' + self.page)
+                axios.get('/api/v1/quotes/' + mode + '?page=' + self.page)
                     .then(
                         response => {
                             const page = response.data;

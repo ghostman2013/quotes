@@ -13,10 +13,10 @@
 
     <div class="navbar-menu" id="navbarBasicExample" v-bind:class="{ 'is-active' : isNavVis }">
         <div class="navbar-start">
-            <a class="navbar-item" href="#/quotes/mine" v-if="token">Profile</a>
-            <a class="navbar-item" href="#/">Top 10</a>
-            <a class="navbar-item" href="#/quotes/flop10">Flop 10</a>
-            <a class="navbar-item" href="#/quotes/last">Last</a>
+            <router-link v-if="token" class="navbar-item" to="/quotes/mine">Profile</router-link>
+            <router-link class="navbar-item" to="/quotes/top10">Top 10</router-link>
+            <router-link class="navbar-item" to="/quotes/flop10">Flop 10</router-link>
+            <router-link class="navbar-item" to="/quotes/last">Last</router-link>
         </div>
     </div>
 </nav>

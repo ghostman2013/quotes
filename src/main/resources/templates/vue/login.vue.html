@@ -25,7 +25,7 @@
         </form>
 
         <div class="has-text-centered is-fullwidth" style="margin-top: 32px">
-            <a href="#/users/new">I haven't account</a>
+            <router-link class="is-primary" to="/users/new">I haven't account</router-link>
         </div>
     </div>
 </template>
@@ -45,7 +45,7 @@
                 const self = this;
 
                 self.ready = false;
-                axios.get("auth/token", {
+                axios.get("/auth/token", {
                     auth: {
                         username: self.email,
                         password: self.password

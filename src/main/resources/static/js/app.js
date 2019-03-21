@@ -14,10 +14,10 @@ const app = new Vue({
     computed: {
         token() {
             return STORE.getters.TOKEN;
-        },
+        }
     },
     components: {
-        'login': httpVueLoader('vue/login.vue'),
-        'greeting': httpVueLoader('vue/greeting.vue')
+        'login': httpVueLoader('/vue/login.vue'),
+        'greeting': httpVueLoader('/vue/greeting.vue')
     }
 });
